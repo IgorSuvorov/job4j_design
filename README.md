@@ -1,0 +1,1 @@
+This is a second block of job4j java study course. In this block of the course I will learn input and output streams, databases and some design patterns.
