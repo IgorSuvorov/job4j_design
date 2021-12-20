@@ -34,5 +34,6 @@ public class LogFilter {
     public static void main(String[] args) {
         List<String> log = filter("/Users/igorsuvorov/IdeaProjects/job4j_design/log.txt");
         System.out.println(log);
+        save(log, "404.txt");
     }
 }
