@@ -6,7 +6,7 @@ public class ResultFile {
         try (FileOutputStream out = new FileOutputStream("result.txt")) {
             for (int row = 1; row < 10; row++) {
                 for (int cell = 1; cell < 10; cell++) {
-                    out.write((row * cell + " ").getBytes());
+                    out.write((row * cell + "  ").getBytes());
                 }
                 out.write(System.lineSeparator().getBytes());
             }
