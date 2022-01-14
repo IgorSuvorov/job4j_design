@@ -9,7 +9,7 @@ public class ConfigTest {
 
     @Test
     public void whenPairWithoutComment() {
-        String path = "./Data/pair_without_comment.properties";
+        String path = "data/pair_with_comment.properties";
         Config config = new Config(path);
         config.load();
         assertThat(config.value("hibernate.dialect"),
@@ -18,7 +18,7 @@ public class ConfigTest {
 
     @Test
     public void whenPairWithComment() {
-        String path = "./Data/pair_with_comment.properties";
+        String path = "data/pair_with_comment.properties";
         Config config = new Config(path);
         config.load();
         assertThat(config.value("hibernate.dialect"),
@@ -27,8 +27,9 @@ public class ConfigTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void whenIllegalArgumentException() {
-        String path = "./Data/pair_with_IllegalArgumentException.properties";
+        String path = "data/pair_with_IllegalArgumentException.properties";
         Config config = new Config(path);
         config.load();
     }
 }
+
