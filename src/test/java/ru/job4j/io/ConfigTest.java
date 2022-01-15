@@ -31,5 +31,12 @@ public class ConfigTest {
         Config config = new Config(path);
         config.load();
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenIllegalArgumentException2() {
+        String path = "data/pair_with_IllegalArgumentException.properties2";
+        Config config = new Config(path);
+        config.load();
+    }
 }
 
