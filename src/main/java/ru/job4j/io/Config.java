@@ -20,10 +20,11 @@ public class Config {
         try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
             read.lines().filter(line -> line.length() > 0 && !line.startsWith("#"))
                     .forEach(line -> {
-                        String[] keyValue = line.split("=");
                         if (line.startsWith("=") || line.endsWith("=")) {
+                            System.out.println("no key or value");
                             throw new IllegalArgumentException();
                         }
+                        String[] keyValue = line.split("=");
                         values.put(keyValue[0], keyValue[1]);
                     });
         } catch (IOException e) {
