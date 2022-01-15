@@ -18,15 +18,16 @@ public class Config {
 
     public void load() {
         try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
-            read.lines().filter(line -> !line.startsWith("#") && line.length() > 0)
+            read.lines().filter(line -> line.length() > 0 && !line.startsWith("#"))
                     .forEach(line -> {
-                        String[] keyValue = line.trim().split("=");
-                        if (keyValue.length < 2) {
+                        String[] keyValue = line.split("=");
+                        if (line.startsWith("=") || line.endsWith("=")) {
                             throw new IllegalArgumentException();
                         }
                         values.put(keyValue[0], keyValue[1]);
                     });
         } catch (IOException e) {
+            System.out.println("file not found");
             e.printStackTrace();
         }
     }
