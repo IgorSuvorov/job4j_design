@@ -21,8 +21,7 @@ public class Config {
             read.lines().filter(line -> line.length() > 0 && !line.startsWith("#"))
                     .forEach(line -> {
                         if (line.startsWith("=") || line.endsWith("=")) {
-                            System.out.println("no key or value");
-                            throw new IllegalArgumentException();
+                            throw new IllegalArgumentException("no key or value");
                         }
                         String[] keyValue = line.split("=");
                         values.put(keyValue[0], keyValue[1]);
