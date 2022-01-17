@@ -102,10 +102,11 @@ public class TableEditor implements AutoCloseable {
             pps.load(reader);
         }
         TableEditor te = new TableEditor(pps);
+        te.dropTable("test");
         te.createTable("test");
         te.addColumn("test", "amount", "int");
         te.renameColumn("test", "amount", "price");
-        System.out.println(getTableScheme(connection, "test"));
+        System.out.println(getTableScheme(initConnection(), "test"));
         te.dropColumn("test", "price");
         te.dropTable("test");
     }
