@@ -12,66 +12,60 @@ public class TableEditor implements AutoCloseable {
 
     private Properties properties;
 
-    public TableEditor(Properties properties) {
+    public TableEditor(Properties properties) throws Exception {
         this.properties = properties;
         initConnection();
     }
 
-    private void initConnection() {
-        connection = null;
+    private static Connection initConnection() throws Exception {
+        Class.forName("org.postgresql.Driver");
+        String url = "jdbc:postgresql://localhost:5432/idea_db";
+        String login = "postgres";
+        String password = "password";
+        return DriverManager.getConnection(url, login, password);
     }
 
-    public void createTable(String tableName) throws SQLException {
+    public void createTable(String tableName) throws Exception {
         String sql = String.format("CREATE TABLE if not exists %s ();",
                 tableName
         );
-        try (Statement statement = connection.createStatement()) {
-            statement.execute(sql);
-        }
+        statementConnection(sql);
     }
 
-    public void dropTable(String tableName) throws SQLException {
+    public void dropTable(String tableName) throws Exception {
         String sql = String.format("DROP TABLE if exists %s;",
                 tableName
         );
-        try (Statement statement = connection.createStatement()) {
-            statement.execute(sql);
-        }
+        statementConnection(sql);
     }
 
-    public void addColumn(String tableName, String columnName, String type) throws SQLException {
+    public void addColumn(String tableName, String columnName, String type) throws Exception {
         String sql = String.format("ALTER TABLE %s ADD COLUMN %s %s;",
                 tableName,
                 columnName,
                 type
         );
-        try (Statement statement = connection.createStatement()) {
-            statement.execute(sql);
-        }
+        statementConnection(sql);
     }
 
-    public void dropColumn(String tableName, String columnName) throws SQLException {
+    public void dropColumn(String tableName, String columnName) throws Exception {
         String sql = String.format("ALTER TABLE %s DROP COLUMN %s;",
                 tableName,
                 columnName
         );
-        try (Statement statement = connection.createStatement()) {
-            statement.execute(sql);
-        }
+        statementConnection(sql);
     }
 
     public void renameColumn(String tableName,
                              String columnName,
-                             String newColumnName) throws SQLException {
+                             String newColumnName) throws Exception {
         String sql = String.format(
                 "ALTER TABLE %s RENAME COLUMN %s TO %s;",
                 tableName,
                 columnName,
                 newColumnName
         );
-        try (Statement statement = connection.createStatement()) {
-            statement.execute(sql);
-        }
+        statementConnection(sql);
     }
 
     public static String getTableScheme(Connection connection, String tableName) throws Exception {
@@ -93,12 +87,21 @@ public class TableEditor implements AutoCloseable {
         return buffer.toString();
     }
 
-    public static void main(String[] args) throws Exception {
-        FileReader reader = new FileReader("app.properties");
-        Properties pps = new Properties();
-        pps.load(reader);
-        TableEditor te = new TableEditor(pps);
+    private void statementConnection(String sql) throws Exception {
+        try (Connection connection = initConnection()) {
+            try (Statement statement = connection.createStatement()) {
+                statement.execute(sql);
+            }
+        }
+    }
 
+    public static void main(String[] args) throws Exception {
+        Properties pps;
+        try (FileReader reader = new FileReader("app.properties")) {
+            pps = new Properties();
+            pps.load(reader);
+        }
+        TableEditor te = new TableEditor(pps);
         te.createTable("test");
         te.addColumn("test", "amount", "int");
         te.renameColumn("test", "amount", "price");
