@@ -4,13 +4,12 @@ import java.io.FileReader;
 import java.sql.*;
 import java.util.Properties;
 import java.util.StringJoiner;
-import static java.sql.DriverManager.getConnection;
 
 public class TableEditor implements AutoCloseable {
 
     private static Connection connection;
 
-    private Properties properties;
+    private static Properties properties;
 
     public TableEditor(Properties properties) throws Exception {
         this.properties = properties;
@@ -19,9 +18,9 @@ public class TableEditor implements AutoCloseable {
 
     private static Connection initConnection() throws Exception {
         Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://localhost:5432/idea_db";
-        String login = "postgres";
-        String password = "password";
+        String url = properties.getProperty("hibernate.connection.url");
+        String login =  properties.getProperty("hibernate.connection.username");
+        String password =  properties.getProperty("hibernate.connection.password");
         return DriverManager.getConnection(url, login, password);
     }
 
