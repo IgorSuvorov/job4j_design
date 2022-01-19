@@ -13,7 +13,7 @@ public class TableEditor implements AutoCloseable {
 
     public TableEditor(Properties properties) throws Exception {
         this.properties = properties;
-        initConnection();
+        this.connection = initConnection();
     }
 
     private static Connection initConnection() throws Exception {
@@ -87,10 +87,8 @@ public class TableEditor implements AutoCloseable {
     }
 
     private void statementConnection(String sql) throws Exception {
-        try (Connection connection = initConnection()) {
             try (Statement statement = connection.createStatement()) {
                 statement.execute(sql);
-            }
         }
     }
 
