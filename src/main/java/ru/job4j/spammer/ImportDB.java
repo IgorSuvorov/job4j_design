@@ -22,10 +22,13 @@ public class ImportDB {
         List<User> users = new ArrayList<>();
         try (BufferedReader rd = new BufferedReader(new FileReader(dump))) {
             rd.lines().forEach(line -> {
-                if (line.startsWith(";") || line.endsWith(";")) {
-                    throw new IllegalArgumentException("no key or value");
+                if (line.startsWith(";")) {
+                    throw new IllegalArgumentException("no key");
                 }
                 String[] keyValue = line.split(";");
+                if (keyValue.length < 2) {
+                    throw new IllegalArgumentException("no key or value");
+                }
                 users.add(new User(keyValue[0], keyValue[1]));
             });
         } catch (IOException e) {
