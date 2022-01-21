@@ -21,10 +21,16 @@ public class ImportDB {
     public List<User> load() throws IOException {
         List<User> users = new ArrayList<>();
         try (BufferedReader rd = new BufferedReader(new FileReader(dump))) {
-            rd.lines().forEach((n) -> {
-                String[] keyValue = n.split(";");
+            rd.lines().forEach(line -> {
+                if (line.startsWith(";") || line.endsWith(";")) {
+                    throw new IllegalArgumentException("no key or value");
+                }
+                String[] keyValue = line.split(";");
                 users.add(new User(keyValue[0], keyValue[1]));
             });
+        } catch (IOException e) {
+            System.out.println("file not found");
+            e.printStackTrace();
         }
         return users;
     }
@@ -38,7 +44,7 @@ public class ImportDB {
         )) {
             for (User user : users) {
                 try (PreparedStatement ps = cnt.prepareStatement(
-                   "insert into users (name, email) values (?, ?)")) {
+                        "insert into users (name, email) values (?, ?)")) {
                     ps.setString(1, user.name);
                     ps.setString(2, user.email);
                     ps.execute();
