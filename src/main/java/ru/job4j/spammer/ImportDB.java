@@ -22,11 +22,8 @@ public class ImportDB {
         List<User> users = new ArrayList<>();
         try (BufferedReader rd = new BufferedReader(new FileReader(dump))) {
             rd.lines().forEach(line -> {
-                if (line.startsWith(";")) {
-                    throw new IllegalArgumentException("no key");
-                }
                 String[] keyValue = line.split(";");
-                if (keyValue.length < 2) {
+                if (keyValue.length < 2 || line.startsWith(";")) {
                     throw new IllegalArgumentException("no key or value");
                 }
                 users.add(new User(keyValue[0], keyValue[1]));
@@ -58,9 +55,9 @@ public class ImportDB {
 
     private static class User {
         @SuppressWarnings("checkstyle:VisibilityModifier")
-        String name;
+        private String name;
         @SuppressWarnings("checkstyle:VisibilityModifier")
-        String email;
+        private String email;
 
         public User(String name, String email) {
             this.name = name;
