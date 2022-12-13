@@ -2,6 +2,7 @@ package ru.job4j.iterator;
 
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.BDDAssertions.withPrecision;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -47,6 +48,6 @@ class BoxTest {
                 .isPositive()
                 .isGreaterThan(383)
                 .isLessThan(385)
-                .isEqualTo(384);
+                .isCloseTo(384d, withPrecision(0.01d));
     }
 }
