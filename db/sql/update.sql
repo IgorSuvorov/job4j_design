@@ -1,0 +1,1 @@
+update students set name = 'Mary' where id = 3;
