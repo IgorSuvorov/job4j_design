@@ -11,7 +11,9 @@ public class Main {
                 new Student[] {st1, st2});
 
         final Gson gson = new GsonBuilder().create();
+
         String gsonString = gson.toJson(subject);
+
         System.out.println(gson.toJson(subject));
 
         final Subject subjectMod = gson.fromJson(gsonString, Subject.class);
